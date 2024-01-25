@@ -1,10 +1,9 @@
-﻿namespace AbcBooks.Models
+﻿namespace AbcBooks.Models;
+
+public class Dashboard
 {
-    public class Dashboard
-    {
-        public float TotalRevenue { get; set; }
-        public int LowStock { get; set; }
-        public int BlockedUsers { get; set; }
-        public int PendingOrders { get; set; }
-    }
+    public float TotalRevenue { get; set; }
+    public int LowStock { get; set; }
+    public int BlockedUsers { get; set; }
+    public int PendingOrders { get; set; }
 }

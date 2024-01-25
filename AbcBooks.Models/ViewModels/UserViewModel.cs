@@ -1,8 +1,7 @@
-﻿namespace AbcBooks.Models.ViewModels
+﻿namespace AbcBooks.Models.ViewModels;
+
+public class UserViewModel
 {
-	public class UserViewModel
-	{
-        public IEnumerable<ApplicationUser> Users { get; set; }
-        public string SearchString { get; set; }
-    }
+    public IEnumerable<ApplicationUser> Users { get; set; }
+    public string SearchString { get; set; }
 }

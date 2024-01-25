@@ -1,8 +1,7 @@
-﻿namespace AbcBooks.Models
+﻿namespace AbcBooks.Models;
+
+public class DailySales
 {
-    public class DailySales
-    {
-        public DateOnly Date { get; set; }
-        public float Revenue { get; set; }
-    }
+    public DateOnly Date { get; set; }
+    public float Revenue { get; set; }
 }
