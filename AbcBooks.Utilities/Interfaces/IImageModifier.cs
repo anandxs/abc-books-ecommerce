@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace AbcBooks.Utilities.Interfaces
+namespace AbcBooks.Utilities.Interfaces;
+
+public interface IImageModifier
 {
-	public interface IImageModifier
-	{
-		bool IsValidImage(IFormFile formFile);
-	}
+	bool IsValidImage(IFormFile formFile);
 }

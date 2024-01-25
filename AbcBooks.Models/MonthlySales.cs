@@ -1,8 +1,7 @@
-﻿namespace AbcBooks.Models
+﻿namespace AbcBooks.Models;
+
+public class MonthlySales
 {
-    public class MonthlySales
-    {
-        public string Month { get; set; }
-        public float Revenue { get; set; }
-    }
+    public string Month { get; set; }
+    public float Revenue { get; set; }
 }

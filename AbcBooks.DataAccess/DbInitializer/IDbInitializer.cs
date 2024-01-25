@@ -1,7 +1,6 @@
-﻿namespace AbcBooks.DataAccess.DbInitializer
+﻿namespace AbcBooks.DataAccess.DbInitializer;
+
+public interface IDbInitializer
 {
-	public interface IDbInitializer
-	{
-		void Initialize();
-	}
+    void Initialize();
 }

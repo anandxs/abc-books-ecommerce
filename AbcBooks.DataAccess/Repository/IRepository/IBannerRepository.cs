@@ -1,8 +1,7 @@
 ﻿using AbcBooks.Models;
 
-namespace AbcBooks.DataAccess.Repository.IRepository
+namespace AbcBooks.DataAccess.Repository.IRepository;
+
+public interface IBannerRepository : IRepository<Banner>
 {
-	public interface IBannerRepository : IRepository<Banner>
-	{
-	}
 }
