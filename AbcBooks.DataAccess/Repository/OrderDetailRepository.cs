@@ -2,27 +2,26 @@
 using AbcBooks.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AbcBooks.DataAccess.Repository
+namespace AbcBooks.DataAccess.Repository;
+
+public class OrderDetailRepository : Repository<OrderDetail>, IOrderDetailRepository
 {
-	public class OrderDetailRepository : Repository<OrderDetail>, IOrderDetailRepository
-	{
-		private readonly ApplicationDbContext _db;
+    private readonly ApplicationDbContext _db;
 
-        public OrderDetailRepository(ApplicationDbContext db) : base(db)
-        {
-			_db = db;
-        }
+    public OrderDetailRepository(ApplicationDbContext db) : base(db)
+    {
+        _db = db;
+    }
 
-		public IEnumerable<OrderDetail> GetOrderDetailsWithProducts(int orderId)
-		{
-			return _db.OrderDetails
-				.Where(x => x.OrderId == orderId)
-				.Include(x => x.Product);
-		}
+    public IEnumerable<OrderDetail> GetOrderDetailsWithProducts(int orderId)
+    {
+        return _db.OrderDetails
+            .Where(x => x.OrderId == orderId)
+            .Include(x => x.Product);
+    }
 
-		public void Update(OrderDetail orderDetail)
-		{
-			_db.OrderDetails.Update(orderDetail);
-		}
-	}
+    public void Update(OrderDetail orderDetail)
+    {
+        _db.OrderDetails.Update(orderDetail);
+    }
 }

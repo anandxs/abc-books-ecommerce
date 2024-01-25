@@ -1,9 +1,8 @@
 ﻿using AbcBooks.Models;
 
-namespace AbcBooks.DataAccess.Repository.IRepository
+namespace AbcBooks.DataAccess.Repository.IRepository;
+
+public interface IUserCouponRepository : IRepository<UserCoupon>
 {
-	public interface IUserCouponRepository : IRepository<UserCoupon>
-	{
-		UserCoupon? GetUserCouponWithCoupon(string applicationUserid, int orderId);
-	}
+    UserCoupon? GetUserCouponWithCoupon(string applicationUserid, int orderId);
 }

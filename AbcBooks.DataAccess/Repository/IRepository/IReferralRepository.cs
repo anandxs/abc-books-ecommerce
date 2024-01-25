@@ -1,9 +1,8 @@
 ﻿using AbcBooks.Models;
 
-namespace AbcBooks.DataAccess.Repository.IRepository
+namespace AbcBooks.DataAccess.Repository.IRepository;
+
+public interface IReferralRepository : IRepository<Referral>
 {
-	public interface IReferralRepository : IRepository<Referral>
-	{
-		void UpdateFullFillmentStatus(Referral referral);
-	}
+    void UpdateFullFillmentStatus(Referral referral);
 }

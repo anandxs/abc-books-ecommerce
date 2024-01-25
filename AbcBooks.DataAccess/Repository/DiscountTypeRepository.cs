@@ -1,14 +1,13 @@
 ﻿using AbcBooks.DataAccess.Repository.IRepository;
 using AbcBooks.Models;
 
-namespace AbcBooks.DataAccess.Repository
+namespace AbcBooks.DataAccess.Repository;
+
+public class DiscountTypeRepository : Repository<DiscountType>, IDiscountTypeRepository
 {
-	public class DiscountTypeRepository : Repository<DiscountType>, IDiscountTypeRepository
-	{
-		private readonly ApplicationDbContext _db;
-		public DiscountTypeRepository(ApplicationDbContext db) : base(db)
-		{
-			_db = db;
-		}
-	}
+    private readonly ApplicationDbContext _db;
+    public DiscountTypeRepository(ApplicationDbContext db) : base(db)
+    {
+        _db = db;
+    }
 }
