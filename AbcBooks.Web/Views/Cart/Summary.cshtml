@@ -1,0 +1,211 @@
+﻿@model AbcBooks.Models.ViewModels.ShoppingCartViewModel
+
+@using Microsoft.Extensions.Options;
+@inject IOptions<StripeSettings> Stripe
+
+@{
+	ViewData["Title"] = "Summary";
+}
+
+<h1>Summary</h1>
+<hr />
+
+@{
+	int i = 1;
+	foreach (var product in Model.CartItems)
+	{
+		@if (TempData[$"error{i}"] is not null)
+		{
+			<div class="alert alert-dismissible alert-danger">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				<strong>
+					@TempData[$"error{i++}"]
+				</strong>
+			</div>
+		}
+	}
+
+	@if (TempData[$"InsufficientFunds"] is not null)
+	{
+		<div class="alert alert-dismissible alert-danger">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			<strong>
+				@TempData[$"InsufficientFunds"]
+			</strong>
+		</div>
+	}
+}
+
+<form method="post">
+	<br />
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-primary text-light ml-0">
+				<div class=" row container">
+					<div class="col-6 d-flex flex-column justify-content-center">
+						Order Summary
+					</div>
+					<div class="col-6 text-end">
+						<a asp-action="Index" class="btn btn-outline-light">Back to Cart</a>
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="container rounded p-2">
+					<div class="row">
+						<div class="col-12 col-lg-6 pb-4">
+							<div class="row">
+								<h4 class="d-flex justify-content-between align-items-center mb-3">
+									<span class="text-info">Choose Shipping Address</span>
+								</h4>
+							</div>
+							<div class="row mb-3">
+								<div class="col-12">
+									<select asp-for="Order.ShippingAddressId" asp-items="@Model.AddressList" class="form-select">
+										<option selected>-- Select Address --</option>
+									</select>
+									@if (TempData["InvalidShippingAddress"] is not null)
+									{
+										<span class="text-danger">@TempData["InvalidShippingAddress"]</span>
+									}
+									@*<span class="text-danger" asp-validation-for="Order.ShippingAddressId"></span>*@
+								</div>
+							</div>
+							<div class="d-flex justify-content-between gap-2">
+								<hr class="w-100" />
+								<p class="text-body-tertiary">OR</p>
+								<hr class="w-100" />
+							</div>
+							<div class="row">
+								<h4 class="d-flex justify-content-between align-items-center mb-3">
+									<span class="text-info">Create New Address</span>
+								</h4>
+							</div>
+							<div class="row mb-3">
+								<div class="col-12">
+									<a asp-area="Identity" asp-page="/Account/Manage/Addresses" class="btn btn-outline-primary">Create</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-lg-5 offset-lg-1">
+							<h4 class="d-flex justify-content-between align-items-center mb-3">
+								<span class="text-info">Order Summary:</span>
+							</h4>
+
+							@if (Model.CouponCode is null)
+							{
+								<div class="form-group mb-3">
+									<input class="form-control mb-2" name="coupon" type="text" placeholder="Enter Coupon" />
+									@if (TempData["InvalidCoupon"] is not null)
+									{
+										<span class="text-danger d-block">@TempData["InvalidCoupon"]</span>
+									}
+									<button asp-action="AddCoupon" class="btn btn-primary w-100" type="submit">Add Coupon</button>
+								</div>
+							}
+							else
+							{
+								<div class="form-group mb-3">
+									<input name="couponCode" readonly value="@Model.CouponCode" class="form-control mb-2" type="text" />
+									<p class="text-info-emphasis">@TempData["CouponInfo"]</p>
+									<a asp-action="Summary" class="btn btn-primary w-100">Remove Coupon</a>
+								</div>
+							}
+
+							<ul class="list-group mb-3">
+								@foreach (var details in Model.CartItems)
+								{
+									<li class="list-group-item d-flex justify-content-between">
+										<div>
+											<h6 class="my-0">@details.Product.Title</h6>
+											<small class="text-muted">Quantity: @details.Quantity</small>
+										</div>
+										<span class="text-muted">@((details.ListPrice * details.Quantity).ToString("c")) </span>
+									</li>
+								}
+
+								@if (Model.PreDiscountOrderTotal is null)
+								{
+									<li class="list-group-item d-flex justify-content-between bg-light">
+										<small class="text-info">Total</small>
+										<strong class="text-info">@Model.Order.OrderTotal.ToString("c")</strong>
+									</li>
+								}
+								else
+								{
+									<li class="list-group-item d-flex justify-content-between bg-light">
+										<small class="text-info">Total</small>
+										<strong class="text-info">
+											@(((float)Model.PreDiscountOrderTotal!).ToString("c"))
+										</strong>
+									</li>
+									<li class="list-group-item d-flex justify-content-between bg-light">
+										<small class="text-info">Discount</small>
+										<strong class="text-info">
+											@((((float)Model.PreDiscountOrderTotal!) - Model.Order.OrderTotal).ToString("c"))
+										</strong>
+									</li>
+									<li class="list-group-item d-flex justify-content-between bg-light">
+										<small class="text-info">New Total</small>
+										<strong class="text-info">@Model.Order.OrderTotal.ToString("c")</strong>
+									</li>
+								}
+							</ul>
+							<div class="col-12 col-lg-5 offset-lg-1">
+								<fieldset class="form-group">
+									<legend class="mt-4">Radio buttons</legend>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="paymentMethod" id="optionsRadios1" value="CashOnDelivery" @*required*@>
+										<label class="form-check-label" for="optionsRadios1">
+											Cash On Delivery
+										</label>
+									</div>
+									<div class="form-check disabled">
+										<input class="form-check-input" type="radio" name="paymentMethod" id="optionsRadios3" value="OnlinePayment">
+										<label class="form-check-label" for="optionsRadios3">
+											Online Payment
+										</label>
+									</div>
+									@if (Model.Wallet.Balance > Model.Order.OrderTotal)
+									{
+										<div class="form-check disabled">
+											<input class="form-check-input" type="radio" name="paymentMethod" id="optionsRadios4" value="WalletPayment">
+											<label class="form-check-label" for="optionsRadios4">
+												Pay From Wallet
+											</label>
+										</div>
+									}
+								</fieldset>
+								@if (TempData["InvalidPayment"] is not null)
+								{
+									<span class="text-danger">@TempData["InvalidPayment"]</span>
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer">
+				<div class="row">
+					<div class="col-12 col-md-8 pt-2">
+						<p style="color:maroon; font-size:14px;">
+							Estimate Arrival Date:
+							@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()
+						</p>
+					</div>
+					<div class="col-12 col-md-4 d-flex gap-2">
+						<input asp-action="Summary" type="submit" value="Place Order" class="btn btn-primary form-control" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
+
+

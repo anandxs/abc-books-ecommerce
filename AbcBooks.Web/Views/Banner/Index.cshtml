@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Banner>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Banner Management</h1>
+<hr />
+
+<div class="mb-4">
+	@if (ViewBag.BannerCount < 4)
+	{
+		<a class="btn btn-primary" asp-action="Create">Create New Banner</a>
+	}
+	else
+	{
+		<button disabled class="btn btn-info" asp-action="Create">Delete a banner to add new</button>
+	}
+</div>
+
+<div class="row">
+	@foreach (var image in Model)
+	{
+		<div class="col-12 col-lg-6 mb-2">
+			<img class="w-100" src="@image.ImageUrl" alt="couldn't load banner" />
+		</div>
+		<div class="col-12 col-lg-3 mb-2">
+			<label class="display-6 text-start">URL :</label>
+			<a class="text-info" href="@image.Href">@image.Href</a>
+		</div>
+		<div class="col-12 col-lg-3 mb-2">
+			<div class="row">
+				<div class="col-12 col-sm-6">
+					<a asp-action="Edit" asp-route-id="@image.Id" class="btn btn-warning w-100 mb-1">Edit</a>
+				</div>
+				<div class="col-12 col-sm-6">
+					@{
+						string url = $"'/Banner/Delete?id={image.Id}'";
+						<a onclick="Delete(@url)" class="btn btn-danger w-100 mb-1">Delete</a>
+					}
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+<script src="~/js/banner.js"></script>

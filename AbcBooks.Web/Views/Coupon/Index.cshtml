@@ -1,0 +1,39 @@
+﻿@model IEnumerable<AbcBooks.Models.Coupon>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div class="d-flex justify-content-between pt-4">
+	<div class="p-2">
+		<h1 class="text-dark">Coupon Management</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 col-md-3">
+		<a asp-action="Create" class="btn btn-primary w-100">Create Coupon</a>
+	</div>
+	<div class="col-12 col-md-9">
+	</div>
+</div>
+<br />
+<br />
+
+<div class="table-scroll">
+	<table id="couponTbl" class="table table-bordered">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Coupon Code</th>
+				<th>Discount Type</th>
+				<th>Usage Limit</th>
+				<th>Expiration Date</th>
+				<th></th>
+			</tr>
+		</thead>
+	</table>
+</div>
+
+@section Scripts {
+	<script src="~/js/coupon.js"></script>
+}

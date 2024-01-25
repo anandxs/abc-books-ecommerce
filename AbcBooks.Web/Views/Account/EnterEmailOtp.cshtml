@@ -1,0 +1,35 @@
+﻿@model EmailOtp
+
+@{
+	ViewData["Title"] = "GetEmailOtp";
+}
+
+<div class="row">
+	<div class="col-md-4">
+		<section>
+			<form id="account" method="post">
+				<hr />
+				<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+				<div class="form-floating mb-3">
+					<input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+					<label asp-for="Email" class="form-label">Email</label>
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<input asp-for="Otp" class="form-control" />
+					<label asp-for="Otp" class="form-label">OTP</label>
+					<span asp-validation-for="Otp" class="text-danger"></span>
+				</div>
+				<div>
+					<button asp-action="ValidateOtp" type="submit" class="w-100 btn btn-lg btn-primary">Submit</button>
+				</div>
+			</form>
+		</section>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

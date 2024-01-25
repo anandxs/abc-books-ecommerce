@@ -1,0 +1,80 @@
+﻿@model AbcBooks.Models.ViewModels.UserViewModel
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Users</h1>
+<hr />
+
+<div class="row pt-3 pb-3">
+	<div class="col-sm-6"></div>
+	<div class="col-sm-6">
+		<form method="get" class="d-flex">
+			<input class="form-control me-sm-2" type="text" asp-for="SearchString" placeholder="Search">
+			<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+		</form>
+	</div>
+</div>
+
+<table class="table table-bordered table-hover" width="100%">
+	<thead>
+		<tr>
+			<th class="d-none d-sm-table-cell">
+				Id
+			</th>
+			<th>
+				Email
+			</th>
+			<th class="d-none d-sm-table-cell">
+				Phone
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Model.Users)
+		{
+			<tr>
+				<td class="d-none d-sm-table-cell">
+					@user.Id
+				</td>
+				<td>
+					@user.Email
+				</td>
+				<td class="d-none d-sm-table-cell">
+					@user.PhoneNumber
+				</td>
+				<td>
+					<div class="w-100" role="group">
+						<a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@user.Id">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+								<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+								<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+							</svg><span class="d-none d-sm-inline">&ensp; Details</span>
+						</a>
+						@if (user.IsBlocked)
+						{
+							<a class="btn btn-sm btn-success" asp-action="ToggleBlock" asp-route-id="@user.Id">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+									<path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+									<path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
+								</svg><span class="d-none d-sm-inline">&ensp; Unblock</span>
+							</a>
+						}
+						else
+						{
+							<a class="btn btn-sm btn-danger" asp-action="ToggleBlock" asp-route-id="@user.Id">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-dash" viewBox="0 0 16 16">
+									<path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1Zm0-7a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+									<path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
+								</svg><span class="d-none d-sm-inline">&ensp; Block</span>
+							</a>
+						}
+						
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

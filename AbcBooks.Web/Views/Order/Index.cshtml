@@ -1,0 +1,146 @@
+﻿@{
+	ViewData["Title"] = "Orders";
+
+	var status = Context.Request.Query["status"];
+
+	var returns = "text-primary";
+	var pending = "text-primary";
+	var inprocess = "text-primary";
+	var completed = "text-primary";
+	var cancelled = "text-primary";
+	var shipped = "text-primary";
+	var all = "text-primary";
+
+	switch (status)
+	{
+		case "returns":
+			returns = "active text-white";
+			break;
+		case "pending":
+			pending = "active text-white";
+			break;
+		case "inprocess":
+			inprocess = "active text-white";
+			break;
+		case "completed":
+			completed = "active text-white";
+			break;
+		case "cancelled":
+			cancelled = "active text-white";
+			break;
+		case "shipped":
+			shipped = "active text-white";
+			break;
+		default:
+			all = "active text-white";
+			break;
+	}
+}
+
+<div class="p-3">
+	<div class="d-flex justify-content-between pt-4">
+		<div class="p-2">
+			<h2 class="text-dark">Order List</h2>
+		</div>
+		<div class="p-2">
+			<ul class="list-group list-group-horizontal-sm">
+				<a style="text-decoration:none;" asp-controller="Order"
+				   asp-action="Index" asp-route-status="pending">
+				<li class="list-group-item @pending">Pending</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order"
+				   asp-action="Index" asp-route-status="inprocess">
+				<li class="list-group-item @inprocess">In Process</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order"
+				   asp-action="Index" asp-route-status="shipped">
+				<li class="list-group-item @shipped">Shipped</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order"
+				   asp-action="Index" asp-route-status="completed">
+				<li class="list-group-item @completed">Completed</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order"
+				   asp-action="Index" asp-route-status="returns">
+				<li class="list-group-item @returns">Returns</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order"
+				   asp-action="Index" asp-route-status="cancelled">
+				<li class="list-group-item @cancelled">Cancelled</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order"
+				   asp-action="Index" asp-route-status="all">
+				<li class="list-group-item @all">All</li>
+				</a>
+			</ul>
+		</div>
+	</div>
+
+	<br />
+
+	@if (User.IsInRole(ProjectConstants.ADMIN))
+	{
+		<form method="post">
+			<div class="container border border-primary p-3">
+				<div class="row">
+					<div class="col-12 col-md-6 mb-3">
+						<label>From Date</label>
+						<input type="date" name="fromDate" class="form-control" />
+					</div>
+					<div class="col-12 col-md-6 mb-3">
+						<label>To Date</label>
+						<input type="date" name="toDate" class="form-control" />
+					</div>
+					<div class="col-12 col-md-6 mb-3">
+						<label>Filter by</label>
+						<select name="filter" class="form-select">
+							<option value="All">All</option>
+							<option value="Returns">Returns</option>
+							<option value="Cancelled">Cancelled</option>
+							<option value="Delivered">Completed</option>
+							<option value="Shipped">Shipped</option>
+							<option value="In Process">In Process</option>
+							<option value="Pending">Pending</option>
+						</select>
+					</div>
+					<div class="col-12 col-md-6 mb-3">
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<label></label>
+								<button type="submit" asp-controller="Download" asp-action="DownloadSalesReportAsExcel" class="btn btn-outline-success w-100">Export Excel</button>
+							</div>
+							<div class="col-12 col-md-6">
+								<label></label>
+								<button type="submit" asp-controller="Download" asp-action="DownloadSalesReportAsPdf" class="btn btn-outline-info w-100">Export PDF</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	}
+
+	<br />
+
+	<div class="table-scroll">
+		<table id="tblData" class="table table-bordered table-striped" style="width:100%">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Phone Number</th>
+					<th>Email</th>
+					<th>Status</th>
+					<th>Order Date</th>
+					<th>Total</th>
+					<th></th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+
+</div>
+
+@section Scripts {
+	<script src="~/js/order.js"></script>
+}

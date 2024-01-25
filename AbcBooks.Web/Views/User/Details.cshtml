@@ -1,0 +1,42 @@
+﻿@model AbcBooks.Models.ViewModels.ApplicationUserViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<hr />
+
+<table class="table table-primary table-bordered">
+    <tbody>
+        <tr>
+            <td><strong>Id</strong></td>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <td><strong>Email</strong></td>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <td><strong>Phone Number</strong></td>
+            <td>@Model.PhoneNumber</td>
+        </tr>
+        <tr>
+            <td><strong>First Name</strong></td>
+            <td>@Model.FirstName</td>
+        </tr>
+        <tr>
+            <td><strong>Last Name</strong></td>
+            <td>@Model.LastName</td>
+        </tr>
+        <tr>
+            <td><strong>Account Status</strong></td>
+            <td>@(Model.IsBlocked ? "Blocked" : "Active")</td>
+        </tr>
+    </tbody>
+</table>
+
+<a asp-controller="User" asp-action="Index" class="btn btn-outline-secondary">Back</a>
+
+
+

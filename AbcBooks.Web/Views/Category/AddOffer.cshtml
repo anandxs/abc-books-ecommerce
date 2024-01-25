@@ -1,0 +1,31 @@
+﻿@model AbcBooks.Models.Category
+
+@{
+	ViewData["Title"] = "Category Offer";
+}
+
+<h1>Add/Update Category Offer</h1>
+<hr />
+
+<form asp-action="AddOffer" method="post">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<input asp-for="Id" hidden />
+	<div class="row pt-3">
+		<div class="col-12 col-sm-6">
+			<input placeholder="Enter discount percentage" asp-for="Discount" class="form-control" />
+			<span asp-validation-for="Discount" class="text-danger"></span>
+		</div>
+		<div class="col-12 col-sm-3">
+			<input type="submit" value="Save" class="btn btn-primary w-100" />
+		</div>
+		<div class="col-12 col-sm-3">
+			<a class="btn btn-outline-secondary w-100" asp-action="Index">Back to List</a>
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

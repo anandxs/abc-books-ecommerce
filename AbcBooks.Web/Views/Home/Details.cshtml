@@ -1,0 +1,123 @@
+﻿@model ShoppingCart
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+@if (TempData["OrderExceedsStock"] is not null)
+{
+	<div class="alert alert-dismissible alert-danger">
+		<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		<strong>@TempData["OrderExceedsStock"]</strong>
+	</div>
+}
+
+<div class="row mt-2 mb-2">
+	<div class="col-md-6"></div>
+	<div class="col-md-6"><a asp-action="Browse" class="btn btn-outline-secondary w-100">Go Back To Browse</a></div>
+</div>
+<form method="post">
+	<input hidden asp-for="ProductId" />
+	<div class="bg-primary row">
+		<div class="p-4 col-12 col-sm-3">
+			<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					@for (int i = 0; i < Model.ProductImages.Count; i++)
+					{
+						<div class="carousel-item @(i == 0 ? "active" : "")">
+							<img src="@Model.ProductImages[i].ImageUrl" class="d-block w-100 book-img" alt="book image">
+						</div>
+					}
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+		</div>
+		<div class="p-4 col-12 col-sm-9 d-flex flex-column justify-content-center gap-3">
+			<div>
+				<p class="btn btn-xl btn-outline-light disabled">@Model.Product.Category.Name</p>
+				<h2>@Model.Product.Title</h2>
+				<p>By @Model.Product.Author</p>
+			</div>
+			@if (Model.Product.Discount == 0)
+			{
+				<h3 class="card-text">@Model.Product.Mrp.ToString("c")</h3>
+			}
+			else
+			{
+				<div class="d-flex align-items-center gap-2">
+					<h4 class="card-text">@((Model.Product.Mrp * (100 - Model.Product.Discount) * 0.01).ToString("c"))</h4>
+					<p class="card-text">MRP: <strike>@Model.Product.Mrp.ToString()</strike>(@Model.Product.Discount % off)</p>
+				</div>
+			}
+			<div>
+				@if (Model.Product.Stock == 0)
+				{
+					<h3 class="text-light">Out of stock!</h3>
+					<button type="submit" class="btn btn-dark" disabled>Add To Cart</button>
+				}
+				else if (Model.Product.Stock <= 10)
+				{
+					<h3 class="text-light">Only @Model.Product.Stock left!</h3>
+					<button type="submit" class="btn btn-dark">Add To Cart</button>
+				}
+				else
+				{
+					<button type="submit" class="btn btn-dark">Add To Cart</button>
+				}
+
+				@if (User.Identity.IsAuthenticated)
+				{
+					@if (Model.IsInWishList)
+					{
+						<button asp-action="RemoveFromWishList" class="btn btn-info">Remove From Wishlist</button>
+					}
+					else
+					{
+						<button asp-action="AddToWishList" class="btn btn-info">Add To Wishlist</button>
+					}
+				}
+			</div>
+			@if (Model.Product.Stock > 0)
+			{
+				<div class="p-2">
+					<div class="form-group row">
+						<label asp-for="Quantity" class="col-sm-1 col-form-label fw-bold"></label>
+						<div class="col-sm-3">
+							<input asp-for="Quantity" class="form-control">
+							<span asp-validation-for="Quantity"></span>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+
+	<div class="mt-2">
+		<div class="p-4">
+			<button class="btn btn-primary" disabled>Description</button>
+		</div>
+		<div class="p-4">
+			@Html.Raw(Model.Product.Description);
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
+
+<style>
+	.book-img {
+		max-height: 380px;
+	}
+</style>
+

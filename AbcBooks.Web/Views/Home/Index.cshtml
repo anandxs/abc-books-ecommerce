@@ -1,0 +1,121 @@
+﻿@model AbcBooks.Models.ViewModels.HomeViewModel
+
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+	<div class="carousel-indicators">
+		@for (int i = 0; i < Model.Banners.Count; i++)
+		{
+			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="true" aria-label="Slide @(i + 1)"></button>
+		}
+	</div>
+	<div class="carousel-inner">
+		@for (int i = 0; i < Model.Banners.Count; i++)
+		{
+			<div class="carousel-item @(i == 0 ? "active" : "")">
+				<a href="@Model.Banners[i].Href">
+					<img src="@Model.Banners[i].ImageUrl" class="d-block w-100" alt="could not load image">
+				</a>
+			</div>
+		}
+	</div>
+	<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="visually-hidden">Previous</span>
+	</button>
+	<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="visually-hidden">Next</span>
+	</button>
+</div>
+
+<div class="container mt-5">
+
+	<div>
+		<h3>Featured</h3>
+		<hr />
+		<div class="row">
+			@if (Model.Products.Any())
+			{
+				@foreach (var product in Model.Products)
+				{
+					<div class="col-lg-3 col-sm-6 mb-2">
+						<div class="card border-primary mb-3" style="max-width: 20rem; height: 577px;">
+							@foreach (var img in Model.ProductImages)
+							{
+								@if (product.Id == img.ProductId)
+								{
+									<img src="@img.ImageUrl" class="card-img-top book-img" />
+									break;
+								}
+							}
+							<div class="card-body">
+								<h5 class="card-title">@product.Title</h5>
+								@if (product.Discount == 0)
+								{
+									<h4 class="card-text">@product.Mrp.ToString("c")</h4>
+									@if (product.Stock == 0)
+									{
+										<p class="card-text text-danger">Out of stock!</p>
+									}
+									else if (product.Stock < 11)
+									{
+										<p class="card-text text-danger">Only @product.Stock left!</p>
+									}
+								}
+								else
+								{
+									<div class="d-flex align-items-center gap-2">
+										<h4 class="card-text">@((product.Mrp * (100 - product.Discount) * 0.01).ToString("c"))</h4>
+										<p class="card-text">MRP: <strike>@product.Mrp.ToString()</strike>(@product.Discount % off)</p>
+									</div>
+									@if (product.Stock == 0)
+									{
+										<p class="card-text text-danger">Out of stock!</p>
+									}
+									else if (product.Stock < 11)
+									{
+										<p class="card-text text-danger">Only @product.Stock left!</p>
+									}
+								}
+							</div>
+							<a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-primary">Details</a>
+						</div>
+					</div>
+				}
+			}
+		</div>
+	</div>
+
+	<div class="row mt-5">
+		<div class="col-12 col-sm-6 col-md-4 mb-3">
+			<div class="border border-primary rounded text-center p-5">
+				<h4>Latest Books</h4>
+			</div>
+		</div>
+		<div class="col-12 col-sm-6 col-md-4 mb-3">
+			<div class="border border-primary rounded text-center p-5">
+				<h4>Quality Assured</h4>
+			</div>
+		</div>
+		<div class="col-12 col-sm-6 col-md-4 mb-3">
+			<div class="border border-primary rounded text-center p-5">
+				<h4>Free Shipping</h4>
+			</div>
+		</div>
+	</div>
+
+	<div class="text-center mt-5 mb-5">
+		<a class="btn btn-outline-primary" asp-controller="Home" asp-action="Browse">View All Products</a>
+	</div>
+
+</div>
+
+
+<style>
+	.book-img {
+		max-height: 400px;
+	}
+</style>

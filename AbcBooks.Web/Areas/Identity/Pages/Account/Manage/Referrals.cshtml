@@ -1,0 +1,40 @@
+﻿@page
+@model AbcBooks.Web.Areas.Identity.Pages.Account.Manage.ReferralsModel
+@{
+	ViewData["Title"] = "Referrals";
+}
+
+<div class="container">
+	<h2>Referrals</h2>
+	<hr />
+
+	<div class="mt-3 form-control">
+		<p><span id="referralCode" class="display-6">@Model.Input.ReferralCode</span></p>
+		<button id="copyButton" class="btn btn-outline-primary w-100">Copy</button>
+	</div>
+
+	<p class="mt-3">For every user that signs up using your code, get 5 CREDITS in your wallet on their first purchase!</p>
+</div>
+
+<script>
+    const copyButton = document.getElementById('copyButton');
+    const referralCodeElement = document.getElementById('referralCode');
+
+    copyButton.addEventListener('click', function () {
+        const range = document.createRange();
+        range.selectNode(referralCodeElement);
+
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+
+        document.execCommand('copy');
+
+        window.getSelection().removeAllRanges();
+
+        const originalButtonText = copyButton.textContent;
+        copyButton.textContent = 'Copied!';
+        setTimeout(function () {
+            copyButton.textContent = originalButtonText;
+        }, 2000);
+    });
+</script>

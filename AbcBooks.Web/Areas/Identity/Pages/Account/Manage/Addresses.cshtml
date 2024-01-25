@@ -1,0 +1,91 @@
+﻿@page
+@model AbcBooks.Web.Areas.Identity.Pages.Account.Manage.AddressesModel
+@{
+	ViewData["Title"] = "Addresses";
+}
+
+<div class="row mb-3">
+	<div class="col-12 col-sm-9">
+		<h3>@ViewData["Title"]</h3>
+	</div>
+	<div class="col-12 col-sm-3">
+		<a asp-controller="Address" asp-action="Create" class="btn btn-primary">Create New Address</a>
+	</div>
+</div>
+
+<div class="row">
+	@foreach (var address in Model.Address)
+	{
+		<div class="col-12 col-md-6 col-lg-3">
+			<div class="card border-primary mb-3" style="max-width: 20rem">
+				@if (address.IsDefault)
+				{
+					<div class="card-header">Default</div>
+				}
+				<div class="card-body">
+					<p class="card-text">@address.FirstName @address.LastName</p>
+					<p class="card-text">@address.PhoneNumber</p>
+					<p class="card-text">@address.HouseNameOrNumber</p>
+					<p class="card-text">@address.StreetAddress</p>
+					<p class="card-text">@address.City</p>
+					<p class="card-text">@address.District</p>
+					<p class="card-text">@address.PinCode</p>
+					<p class="card-text">@address.State</p>
+					<div>
+						<a asp-controller="Address" asp-action="Edit" asp-route-id="@address.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+						<a onClick="Delete(@address.Id)" class="btn btn-sm btn-outline-primary">Delete</a>
+						@if (!address.IsDefault)
+						{
+							<a asp-controller="Address" asp-action="MakeDefault" asp-route-id="@address.Id" class="btn btn-sm btn-outline-primary">Make Default</a>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+
+	}
+</div>
+
+
+<style>
+	p {
+		margin: 1px;
+		padding: 2px;
+	}
+</style>
+
+<script>
+	function Delete(id) {
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					url: '/Address/Delete?id=' + id,
+					type: 'DELETE',
+					success: function (response) {
+						Swal.fire(
+							'Deleted!',
+							'Successfully deleted',
+							'success'
+						)
+					},
+					error: function (xhr, status, error) {
+						Swal.fire(
+							'Error',
+							'Something went wrong!',
+							'failed'
+						)
+					}
+				});
+				location.reload();
+			}
+		})
+	}
+</script>

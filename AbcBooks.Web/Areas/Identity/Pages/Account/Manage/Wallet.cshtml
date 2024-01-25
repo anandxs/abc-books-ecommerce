@@ -1,0 +1,64 @@
+﻿@page
+
+@model AbcBooks.Web.Areas.Identity.Pages.Account.Manage.WalletModel
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div class="container border border-1">
+	<div class="row p-2 border border-3">
+		<div class="col-5">
+			@if (Model.Wallet.ApplicationUser.FirstName is not null)
+			{
+				<span>Full Name</span>
+			}
+			else
+			{
+				<span>User ID</span>
+			}
+		</div>
+		<div class="col-5">
+			@if (Model.Wallet.ApplicationUser.FirstName is not null)
+			{
+				@($"{Model.Wallet.ApplicationUser.FirstName} {Model.Wallet.ApplicationUser.LastName}")
+			}
+			else
+			{
+				<span>(Add your first and last name)</span>
+			}
+		</div>
+	</div>
+	<div class="row p-2 border border-3">
+		<div class="col-5">
+			Wallet Balance
+		</div>
+		<div class="col-5">
+			@Model.Wallet.Balance Credits
+		</div>
+	</div>
+</div>
+
+
+<div class="container mt-3">
+	<h3>Transaction</h3>
+	<hr />
+
+	<div class="table-scroll">
+		<table id="transactionTbl" class="table table-bordered">
+			<thead>
+				<tr>
+					<td>Id</td>
+					<td>Amount</td>
+					<td>Transaction Type</td>
+					<td>Transaction Date</td>
+				</tr>
+			</thead>
+		</table>
+	</div>
+
+</div>
+
+@section Scripts{
+	<script src="~/js/transaction.js"></script>
+}
+

@@ -1,0 +1,110 @@
+﻿@model AbcBooks.Models.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Product</h1>
+<hr />
+
+<div class="row">
+	<div class="col-12">
+		<form method="post" enctype="multipart/form-data">
+			<input hidden asp-for="Product.IsListed" />
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<input type="hidden" asp-for="Product.Id" />
+			<div class="form-group">
+				<label asp-for="Product.Title" class="control-label"></label>
+				<input asp-for="Product.Title" class="form-control" />
+				<span asp-validation-for="Product.Title" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Product.ISBN" class="control-label"></label>
+				<input asp-for="Product.ISBN" class="form-control" />
+				<span asp-validation-for="Product.ISBN" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Product.Author" class="control-label"></label>
+				<input asp-for="Product.Author" class="form-control" />
+				<span asp-validation-for="Product.Author" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Product.Description" class="control-label"></label>
+				<textarea asp-for="Product.Description" class="form-control"></textarea>
+				<span asp-validation-for="Product.Description" class="text-danger"></span>
+			</div>
+			<div class="row mb-3">
+				<div class="form-group col-sm-3">
+					<label asp-for="Product.Mrp" class="control-label">MRP</label>
+					<input min="0" asp-for="Product.Mrp" class="form-control" />
+					<span asp-validation-for="Product.Mrp" class="text-danger"></span>
+				</div>
+				<div class="form-group col-sm-3">
+					<label asp-for="Product.Discount" class="control-label">Discount %</label>
+					<input min="0" max="100" asp-for="Product.Discount" class="form-control" />
+					<span asp-validation-for="Product.Discount" class="text-danger"></span>
+				</div>
+				<div class="form-group col-sm-3">
+					<label asp-for="Product.Stock" class="control-label"></label>
+					<input min="0" step="1" asp-for="Product.Stock" class="form-control" />
+					<span asp-validation-for="Product.Stock" class="text-danger"></span>
+				</div>
+				<div class="form-group col-sm-3">
+					<label asp-for="Product.CategoryId">Category</label>
+					<select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
+						<option disabled selected>-- Select Category --</option>
+					</select>
+					<span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row border p-2 mb-3">
+				@foreach (var img in Model.ProductImages)
+				{
+					<div class="col-lg-3 col-md-12">
+						<img src="@img.ImageUrl" alt="book photo" class="book-img" />
+						<a asp-action="RemoveImage" asp-route-imageId="@img.Id" class="btn btn-danger">Remove Image</a>
+					</div>
+				}
+				<div class="col-12 mt-3">
+					<input type="file" name="formFiles" multiple="multiple" />
+					<input asp-action="AddNewImages" type="submit" class="btn btn-outline-primary" value="Add New Images" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<input asp-action="Edit" type="submit" value="Update" class="btn btn-primary w-100" />
+				</div>
+				<div class="col-6">
+					<a class="btn btn-outline-secondary w-100" asp-action="Index">Back to List</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+    @{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script>
+		tinymce.init({
+			selector: 'textarea',
+			plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+			toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+			tinycomments_mode: 'embedded',
+			tinycomments_author: 'Author name',
+			mergetags_list: [
+				{ value: 'First.Name', title: 'First Name' },
+				{ value: 'Email', title: 'Email' },
+			],
+			ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant"))
+		});
+	</script>
+}
+
+<style>
+	.book-img {
+		width: 200px;
+		height: 350px;
+	}
+</style>

@@ -1,0 +1,71 @@
+﻿@{
+	ViewData["Title"] = "Categories";
+
+	var status = Context.Request.Query["status"];
+
+	var listed = "text-primary";
+	var unlisted = "text-primary";
+	var all = "text-primary";
+
+	switch (status)
+	{
+		case "listed":
+			listed = "active text-white";
+			break;
+		case "unlisted":
+			unlisted = "active text-white";
+			break;
+		default:
+			all = "active text-white";
+			break;
+	}
+}
+
+<div class="p-3">
+	<div class="d-flex justify-content-between pt-4">
+		<div class="p-2">
+			<h1 class="text-dark">Category List</h1>
+		</div>
+		<div class="p-2">
+			<ul class="list-group list-group-horizontal-sm">
+				<a style="text-decoration:none;" asp-controller="Category"
+				   asp-action="Index" asp-route-status="listed">
+				<li class="list-group-item @listed">Listed</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Category"
+				   asp-action="Index" asp-route-status="unlisted">
+				<li class="list-group-item @unlisted">Unlisted</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Category"
+				   asp-action="Index" asp-route-status="all">
+				<li class="list-group-item @all">All</li>
+				</a>
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12 col-md-3">
+			<a asp-action="Create" class="btn btn-primary w-100">Create Category</a>
+		</div>
+	</div>
+	<br /><br />
+
+	<div class="table-scroll">
+		<table id="categoryTbl" class="table table-bordered table-hover" width="100%">
+			<thead>
+				<tr>
+					<th>
+						Category Name
+					</th>
+					<th>Listing Status</th>
+					<th>Discount</th>
+					<th></th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
+@section Scripts{
+	<script src="~/js/category.js"></script>
+}

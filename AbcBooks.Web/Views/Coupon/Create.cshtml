@@ -1,0 +1,88 @@
+﻿@model AbcBooks.Models.ViewModels.CouponViewModel
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<h1>Create Coupon</h1>
+<hr />
+
+<div class="container">
+	<div class="row">
+		<form asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group mb-3">
+				<label asp-for="Coupon.CouponCode" class="control-label"></label>
+				<input asp-for="Coupon.CouponCode" class="form-control" />
+				<span asp-validation-for="Coupon.CouponCode" class="text-danger"></span>
+			</div>
+			<div class="form-group mb-3">
+				<label asp-for="Coupon.Description" class="control-label"></label>
+				<textarea asp-for="Coupon.Description" class="form-control"></textarea>
+				<span asp-validation-for="Coupon.Description" class="text-danger"></span>
+			</div>
+			<div class="form-group mb-3">
+				<label asp-for="Coupon.DiscountTypeId" class="control-label"></label>
+				<select asp-items="@Model.DiscountTypes" asp-for="Coupon.DiscountTypeId" class="form-control" id="discountTypeSelect">
+					<option selected disabled>-- Select An Option --</option>
+				</select>
+				<span asp-validation-for="Coupon.DiscountTypeId" class="text-danger"></span>
+			</div>
+			<div class="form-group mb-3 amt">
+				<label asp-for="Coupon.DiscountValue" class="control-label"></label>
+				<input min="1" asp-for="Coupon.DiscountValue" class="form-control" />
+				<span asp-validation-for="Coupon.DiscountValue" class="text-danger"></span>
+			</div>
+			@*<div class="form-group mb-3 amt">
+				<div class="row">
+					<div class="col-12 col-sm-6">
+						<label asp-for="Coupon.CashbackMin" class="control-label"></label>
+						<input min="1" asp-for="Coupon.CashbackMin" class="form-control" />
+						<span asp-validation-for="Coupon.CashbackMin" class="text-danger"></span>
+					</div>
+					<div class="col-12 col-sm-6">
+						<label asp-for="Coupon.CashbackMax" class="control-label"></label>
+						<input min="1" asp-for="Coupon.CashbackMax" class="form-control" />
+						<span asp-validation-for="Coupon.CashbackMax" class="text-danger"></span>
+					</div>
+				</div>
+			</div>*@
+			<div class="form-group mb-3">
+				<label asp-for="Coupon.MaxAmount" class="control-label"></label>
+				<input min="1" asp-for="Coupon.MaxAmount" class="form-control" />
+				<span asp-validation-for="Coupon.MaxAmount" class="text-danger"></span>
+			</div>
+			<div class="form-group mb-3">
+				<label asp-for="Coupon.ExpirateDate" class="control-label"></label>
+				<input asp-for="Coupon.ExpirateDate" class="form-control" />
+				<span asp-validation-for="Coupon.ExpirateDate" class="text-danger"></span>
+			</div>
+			<div class="form-group mb-3">
+				<label asp-for="Coupon.UsageLimit" class="control-label"></label>
+				<input min="1" asp-for="Coupon.UsageLimit" class="form-control" />
+				<span asp-validation-for="Coupon.UsageLimit" class="text-danger"></span>
+			</div>
+			<div class="form-group mb-3">
+				<label asp-for="Coupon.MinimumPurchaseAmount" class="control-label"></label>
+				<input min="1" asp-for="Coupon.MinimumPurchaseAmount" class="form-control" />
+				<span asp-validation-for="Coupon.MinimumPurchaseAmount" class="text-danger"></span>
+			</div>
+			<div class="form-group mb-3">
+				<div class="row">
+					<div class="col-md-3">
+						<input type="submit" value="Create" class="btn btn-primary w-100" />
+					</div>
+					<div class="col-md-3">
+						<a asp-action="Index" class="btn btn-outline-secondary w-100">Back to List</a>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
