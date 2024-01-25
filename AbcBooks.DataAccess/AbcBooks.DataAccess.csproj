@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AbcBooks.Models\AbcBooks.Models.csproj" />
     <ProjectReference Include="..\AbcBooks.Utilities\AbcBooks.Utilities.csproj" />
   </ItemGroup>
 

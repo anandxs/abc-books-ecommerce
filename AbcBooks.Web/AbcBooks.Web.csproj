@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AbcBooks.DataAccess\AbcBooks.DataAccess.csproj" />
-    <ProjectReference Include="..\AbcBooks.Utilities\AbcBooks.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
