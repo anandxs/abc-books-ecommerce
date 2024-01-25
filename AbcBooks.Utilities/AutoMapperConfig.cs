@@ -2,13 +2,12 @@
 using AbcBooks.Models.ViewModels;
 using AutoMapper;
 
-namespace AbcBooks.Utilities
+namespace AbcBooks.Utilities;
+
+public class AutoMapperConfig : Profile
 {
-    public class AutoMapperConfig : Profile
-	{
-        public AutoMapperConfig()
-        {
-            CreateMap<ApplicationUser, ApplicationUserViewModel>();
-        }
+    public AutoMapperConfig()
+    {
+        CreateMap<ApplicationUser, ApplicationUserViewModel>();
     }
 }
